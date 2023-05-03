@@ -2,24 +2,32 @@ import { useState } from 'react'
 import { AppBar, Toolbar, Box, Button, IconButton, Menu, MenuItem, Typography } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu'
 import Login from '../authentication/Login'
+import { Link } from 'react-router-dom'
 
-const pages = ['Użytkownicy', 'Projekty']
+const pages = {
+  '/users': 'Użytkownicy', 
+  '/projects': 'Projekty'
+}
 
 export default function Header() {
   const [activeMenu, setActiveMenu] = useState<null | HTMLElement>(null)
   const openMenu = (event: React.MouseEvent<HTMLElement>) => {
     setActiveMenu(event.currentTarget)
   }
-  const menuClick = () => {
+  const closeMenu = () => {
     setActiveMenu(null)
-    //todo: redirect
   }
   return (
     <AppBar>
-      <Toolbar sx={{px: 1}}>
+      <Toolbar>
         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-          {pages.map((page) => (
-            <Button key={page} sx={{ color: 'white' }} onClick={menuClick}>
+          {Object.entries(pages).map(([link, page]) => (
+            <Button 
+              key={page} 
+              sx={{ color: 'white' }} 
+              onClick={closeMenu}
+              component={Link}
+              to={link}>
               {page}
             </Button>
           ))}
@@ -50,8 +58,12 @@ export default function Header() {
             anchorEl={activeMenu}
             onClose={() => setActiveMenu(null)}
           >
-            {pages.map((page) => (
-              <MenuItem key={page} onClick={menuClick}>
+            {Object.entries(pages).map(([link, page]) => (
+              <MenuItem 
+                key={page} 
+                onClick={closeMenu}
+                component={Link}
+                to={link}>
                 <Typography textAlign="center">{page}</Typography>
               </MenuItem>
             ))}

@@ -1,8 +1,8 @@
-import { ReactNode } from 'react'
 import Box from '@mui/material/Box'
 import Header from './Header'
+import { Outlet } from 'react-router-dom'
 
-export default function Layout({children}: { children?: ReactNode }) {
+export default function Layout() {
 
   return (
     <Box component="div" sx={{display: 'flex'}}>
@@ -11,10 +11,9 @@ export default function Layout({children}: { children?: ReactNode }) {
         component="main"
         sx={{
           flexGrow: 1,
-          height: '100vh',
-          overflow: 'auto',
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          minHeight: '100vh'
         }}
       >
         <Box 
@@ -25,8 +24,12 @@ export default function Layout({children}: { children?: ReactNode }) {
         <Box 
           component="div"
           className="content"
+          sx={{
+            flexGrow: 1,            
+            position: 'relative'
+          }}
         >
-          { children }
+          <Outlet/>
         </Box>
       </Box>
     </Box>
