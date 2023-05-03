@@ -1,5 +1,5 @@
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import Login from './components/authentication/Login'
+import Layout from './components/layout'
 
 function App() {
   if (typeof process.env.REACT_APP_CLIENT_ID === 'undefined'){
@@ -7,9 +7,9 @@ function App() {
   }
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>
-      <div className="App">
-        <Login/>
-      </div>
+      <Layout>
+        <div></div>
+      </Layout>
     </GoogleOAuthProvider>
   )
 }
