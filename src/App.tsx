@@ -1,5 +1,10 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import Layout from './components/layout'
+import Home from "./pages/Home"
+import Projects from "./pages/Projects"
+import Users from "./pages/Users"
+import NotFound from "./pages/NotFound"
 
 function App() {
   if (typeof process.env.REACT_APP_CLIENT_ID === 'undefined'){
@@ -7,11 +12,18 @@ function App() {
   }
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>
-      <Layout>
-        <div></div>
-      </Layout>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="projects" element={<Projects />} />
+            <Route path="users" element={<Users />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </GoogleOAuthProvider>
   )
 }
 
-export default App;
+export default App
