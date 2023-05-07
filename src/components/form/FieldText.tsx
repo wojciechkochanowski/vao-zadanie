@@ -19,8 +19,8 @@ export default function FieldText<T extends FieldValues>({ name, label, control,
         render={({ field: { onChange, value }}) => (
           <TextField
             label={label}
-            value={format(value)}
             onChange={onChange}
+            value={format(value) || ''}
             fullWidth={true}
             inputProps={inputProps}
           />

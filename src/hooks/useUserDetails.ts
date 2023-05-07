@@ -1,16 +1,13 @@
-import { useEffect, useState } from 'react'
-import { FieldValues, UseFormReset } from 'react-hook-form'
+import { useQuery } from 'react-query'
 import { TUser } from '../types/types'
-import { mockUsers } from '../mock'
 
-export default function useUserDetails(id: string | undefined, reset: UseFormReset<FieldValues>) {
-  const [ user, setUser ]  = useState<TUser>()
-  useEffect(() => {
-    if(id){
-      const result = mockUsers.find(p => p.id === parseInt(id))
-      setUser(result)
-      reset(result)
-    }
-  }, [id, reset])
-  return user
+export default function useUserDetails(id: string | undefined) {
+  const { isLoading, data } = useQuery(['user_details', id], async () => {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/users?id=${id}`)
+    return res.json()
+  })
+  let user
+  if(data)
+    user = (data as TUser[])[0]
+  return { isLoading, user }
 }

@@ -1,16 +1,13 @@
-import { useEffect, useState } from 'react'
-import { FieldValues, UseFormReset } from 'react-hook-form'
+import { useQuery } from 'react-query'
 import { TProject } from '../types/types'
-import { mockProjects } from '../mock'
 
-export default function useProjectDetails(id: string | undefined, reset: UseFormReset<FieldValues>) {
-  const [ project, setProject ]  = useState<TProject>()
-  useEffect(() => {
-    if(id){
-      const result = mockProjects.find(p => p.id === parseInt(id))
-      setProject(result)
-      reset(result)
-    }
-  }, [id, reset])
-  return project
+export default function useProjectDetails(id: string | undefined) {
+  const { isLoading, data } = useQuery(['project_details', id], async () => {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/projects?id=${id}`)
+    return res.json()
+  })
+  let project
+  if(data)
+    project = (data as TProject[])[0]
+  return { isLoading, project }
 }
