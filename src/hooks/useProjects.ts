@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
 import { TProject } from '../types/types'
-import { mockProjects } from '../mock'
 
 export default function useProjects() {
-  const [ projects, setProjects ] = useState<TProject[]>([])
-  useEffect(() => {
-    setProjects(mockProjects)
-  }, [])
-  return projects
+  const { isLoading, data } = useQuery('projects', async () => {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/projects`)
+    return res.json()
+  })
+  return { isLoading, projects: data as TProject[] }
 }

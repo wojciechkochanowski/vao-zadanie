@@ -3,13 +3,17 @@ import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell, Paper
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
 import useUsers from '../hooks/useUsers'
 import { Link as RouterLink } from 'react-router-dom'
+import CenteredProgress from '../components/CenteredProgress'
 
 type TComponentProps = {
   projectId?: number
 }
 
 export default function Users({ projectId }: TComponentProps) {
-  const users = useUsers(projectId)
+  const { isLoading, users } = useUsers(projectId)
+  if(isLoading){
+    return <CenteredProgress/>
+  }
   return (
     <>
       {!projectId &&

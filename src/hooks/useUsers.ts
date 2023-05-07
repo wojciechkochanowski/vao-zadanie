@@ -1,16 +1,20 @@
-import { useEffect, useState } from 'react'
-import { TUser } from '../types/types'
-import { mockProjectUsers, mockUsers } from '../mock'
+import { useQuery } from 'react-query'
+import { TProjectUser, TUser } from '../types/types'
 
 export default function useUsers(projectId?: number) {
-  const [ users, setUsers ] = useState<TUser[]>([])
-  useEffect(() => {
+  const { isLoading, data } = useQuery('users', async () => {
+    let res: Response
     if(projectId){
-      const userIds = mockProjectUsers.filter(el => el.projectId === projectId).map(el => el.userId)
-      setUsers(mockUsers.filter(user => userIds.includes(user.id)))
+      const u2pRes = await fetch(`${process.env.REACT_APP_API_URL}/user_to_project?projectId=${projectId}`)
+      const userIds = (await u2pRes.json() as TProjectUser[]).map(el => `id=${el.userId}`)
+      if(userIds.length === 0){
+        return Promise.resolve([])
+      }
+      res = await fetch(`${process.env.REACT_APP_API_URL}/users?${userIds.join('&')}`)
     } else {
-      setUsers(mockUsers)
+      res = await fetch(`${process.env.REACT_APP_API_URL}/users`)
     }
-  }, [projectId])
-  return users
+    return res.json()
+  })
+  return { isLoading, users: data as TUser[] }
 }

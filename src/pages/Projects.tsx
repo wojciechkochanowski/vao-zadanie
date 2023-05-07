@@ -2,9 +2,13 @@ import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell, Paper
 import useProjects from '../hooks/useProjects'
 import { formatDate } from '../utils'
 import { Link as RouterLink } from 'react-router-dom'
+import CenteredProgress from '../components/CenteredProgress'
 
 export default function Projects() {
-  const projects = useProjects()
+  const { isLoading, projects} = useProjects()
+  if(isLoading){
+    return <CenteredProgress/>
+  }
   return (
     <>
       <Typography variant='h3' mb={2} component='h1' fontWeight={300}>Projekty</Typography>

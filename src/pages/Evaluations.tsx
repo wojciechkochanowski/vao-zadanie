@@ -2,13 +2,17 @@ import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell, Paper
 import useEvaluations from '../hooks/useEvaluations'
 import { formatDate } from '../utils'
 import { Link as RouterLink } from 'react-router-dom'
+import CenteredProgress from '../components/CenteredProgress'
 
 type TComponentProps = {
   userId?: number
 }
 
 export default function Evaluations({ userId }: TComponentProps) {
-  const evaluations = useEvaluations(userId)
+  const { isLoading, evaluations } = useEvaluations(userId)
+  if(isLoading){
+    return <CenteredProgress/>
+  }
   return (
     <>
       <TableContainer component={Paper}>
