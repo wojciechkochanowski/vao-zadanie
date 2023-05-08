@@ -4,7 +4,7 @@ import { TUser } from '../types/types'
 import { addAlert } from '../redux/alert'
 
 export default function useUserDetails(id: string | undefined) {
-  const { isLoading, data } = useQuery(['user_details', id], async () => {
+  const { isLoading, data } = useQuery<TUser>(['user_details', id], async () => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/users/${id}`)
     return res.json()
   })
@@ -32,7 +32,7 @@ export function useSaveUserDetails(){
     }
   }, {
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['project_details', data.id + ''])
+      queryClient.invalidateQueries(['user_details', data.id + ''])
       dispatch(addAlert({type: 'success', message: 'Zapisano'}))
     }
   })

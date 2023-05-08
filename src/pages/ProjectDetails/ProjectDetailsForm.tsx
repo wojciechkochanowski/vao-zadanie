@@ -1,17 +1,20 @@
 import { useForm } from 'react-hook-form'
 import { Box, Button } from '@mui/material'
+import { useSelector } from 'react-redux'
 import FieldText from '../../components/form/FieldText'
 import { formatDate } from '../../utils'
 import FieldDropdown from '../../components/form/FieldDropdown'
 import { TProject } from '../../types/types'
 import { useSaveProjectDetails } from '../../hooks/useProjectDetails'
 import { useEffect } from 'react'
+import { RootState } from '../../redux/store'
 
 type TComponentProps = {
   project: TProject
 }
 
 export default function ProjectDetailsForm({ project }: TComponentProps) {
+  const user = useSelector((state: RootState) => state.auth)
   const { handleSubmit, control, reset } = useForm({
     defaultValues: project
   })
@@ -30,7 +33,12 @@ export default function ProjectDetailsForm({ project }: TComponentProps) {
   }
   return (
     <Box component='form' sx={{ my: 2, maxWidth: '300px' }}>
-      <FieldText name='name' label='Nazwa' control={control}/>
+      <FieldText 
+        name='name' 
+        label='Nazwa' 
+        control={control} 
+        readOnly={!user?.isAdmin} 
+      />
       <FieldText 
         name='open' 
         label='Status'
@@ -54,10 +62,15 @@ export default function ProjectDetailsForm({ project }: TComponentProps) {
           { label: 'Normalny', value: 2 },
           { label: 'Niski', value: 1 },
         ]}
+        readOnly={!user?.isAdmin}
       />
-      <Button onClick={handleSubmit(onSubmit)} variant='contained'>Zapisz</Button>
-      { project.open &&
-        <Button onClick={handleClose} variant='outlined' sx={{ ml: 2 }}>Zamknij projekt</Button>
+      { user?.isAdmin &&
+        <>
+          <Button onClick={handleSubmit(onSubmit)} variant='contained'>Zapisz</Button>
+          { project.open &&
+            <Button onClick={handleClose} variant='outlined' sx={{ ml: 2 }}>Zamknij projekt</Button>
+          }
+        </>
       }
     </Box>
   )

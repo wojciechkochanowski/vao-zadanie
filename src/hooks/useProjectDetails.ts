@@ -4,7 +4,7 @@ import { TProject } from '../types/types'
 import { addAlert } from '../redux/alert'
 
 export default function useProjectDetails(id: string | undefined) {
-  const { isLoading, data } = useQuery(['project_details', id], async () => {
+  const { isLoading, data } = useQuery<TProject>(['project_details', id], async () => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`)
     return res.json()
   })

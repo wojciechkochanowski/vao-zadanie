@@ -8,10 +8,13 @@ type TComponentProps<T extends FieldValues> = {
   options: {
     label: string,
     value: number
-  }[]
+  }[],
+  readOnly?: boolean
 }
 
-export default function FieldDropdown<T extends FieldValues>({ name, label, control, options }: TComponentProps<T>) {
+export default function FieldDropdown<T extends FieldValues>({ name, label, control, options, readOnly }: TComponentProps<T>) {
+  const inputProps = { readOnly }
+
   const generateOptions = () => {
     return options.map((option) => {
       return (
@@ -35,6 +38,7 @@ export default function FieldDropdown<T extends FieldValues>({ name, label, cont
               value={value}
               onChange={onChange}
               fullWidth={true}
+              inputProps={inputProps}
             >
               {generateOptions()}
             </Select>

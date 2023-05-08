@@ -6,11 +6,13 @@ type TComponentProps<T extends FieldValues> = {
   label: string,
   control: Control<T>,
   readOnly?: boolean,
-  format?: (value: PathValue<T, Path<T>>) => PathValue<T, Path<T>>
+  format?: (value: PathValue<T, Path<T>>) => PathValue<T, Path<T>>,
+  type?: 'password',
+  [x: string]: any
 }
 
-export default function FieldText<T extends FieldValues>({ name, label, control, readOnly = false, format = v => v }: TComponentProps<T>) {
-  const inputProps = { readOnly }
+export default function FieldText<T extends FieldValues>({ name, label, control, readOnly = false, format = v => v, type, ...other }: TComponentProps<T>) {
+  const inputProps = { readOnly, type }
   return (
     <Box pb={2}>
       <Controller
@@ -20,9 +22,10 @@ export default function FieldText<T extends FieldValues>({ name, label, control,
           <TextField
             label={label}
             onChange={onChange}
-            value={format(value)}
+            value={format(value) || ''}
             fullWidth={true}
             inputProps={inputProps}
+            {...other}
           />
         )}
       />

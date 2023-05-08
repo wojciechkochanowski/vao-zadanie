@@ -1,15 +1,13 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { AppBar, Toolbar, Box, Button, IconButton, Menu, MenuItem, Typography } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu'
-import Login from '../authentication/Login'
-import { Link } from 'react-router-dom'
-
-const pages = {
-  '/users': 'Użytkownicy', 
-  '/projects': 'Projekty'
-}
+import UserMenu from '../authentication/UserMenu'
+import { RootState } from '../../redux/store'
 
 export default function Header() {
+  const user = useSelector((state: RootState) => state.auth)
   const [activeMenu, setActiveMenu] = useState<null | HTMLElement>(null)
   const openMenu = (event: React.MouseEvent<HTMLElement>) => {
     setActiveMenu(event.currentTarget)
@@ -17,6 +15,12 @@ export default function Header() {
   const closeMenu = () => {
     setActiveMenu(null)
   }
+  
+  let pages = user ? {
+    '/users': 'Użytkownicy', 
+    '/projects': 'Projekty'
+  } : {}
+  
   return (
     <AppBar>
       <Toolbar>
@@ -69,7 +73,7 @@ export default function Header() {
             ))}
           </Menu>
         </Box>
-        <Login/>
+        <UserMenu/>
       </Toolbar>
     </AppBar>
   )
