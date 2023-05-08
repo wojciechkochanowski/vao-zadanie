@@ -20,7 +20,7 @@ export default function FieldText<T extends FieldValues>({ name, label, control,
           <TextField
             label={label}
             onChange={onChange}
-            value={format(value) || ''}
+            value={format(value)}
             fullWidth={true}
             inputProps={inputProps}
           />
