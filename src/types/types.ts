@@ -28,3 +28,8 @@ export type TProjectUser = {
   userId: number,
   projectId: number
 }
+
+export type TAlert = {
+  type: 'error' | 'warning' | 'info' | 'success'
+  message: string
+}

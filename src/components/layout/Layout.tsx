@@ -2,6 +2,7 @@ import Box from '@mui/material/Box'
 import Header from './Header'
 import { Outlet } from 'react-router-dom'
 import { Container } from '@mui/material'
+import AlertHandler from '../alerts/AlertHandler'
 
 export default function Layout() {
 
@@ -30,6 +31,7 @@ export default function Layout() {
             position: 'relative'
           }}
         >
+          <AlertHandler/>
           <Container sx={{pt: 4}}>
             <Outlet/>
           </Container>

@@ -4,20 +4,29 @@ import FieldText from '../../components/form/FieldText'
 import { formatDate } from '../../utils'
 import FieldDropdown from '../../components/form/FieldDropdown'
 import { TProject } from '../../types/types'
+import { useSaveProjectDetails } from '../../hooks/useProjectDetails'
+import { useEffect } from 'react'
 
 type TComponentProps = {
   project: TProject
 }
 
 export default function ProjectDetailsForm({ project }: TComponentProps) {
-  const { handleSubmit, control } = useForm({
+  const { handleSubmit, control, reset } = useForm({
     defaultValues: project
   })
-  const onSubmit = (data: any) => {
-    console.log(data)
+  const { mutate } = useSaveProjectDetails()
+  useEffect(() => {
+    reset(project)
+  }, [project, reset])
+  const onSubmit = (data: TProject) => {
+    mutate(data)
   }
   const handleClose = () => {
-    console.log('close')
+    mutate({
+      ...project,
+      open: false
+    })
   }
   return (
     <Box component='form' sx={{ my: 2, maxWidth: '300px' }}>
