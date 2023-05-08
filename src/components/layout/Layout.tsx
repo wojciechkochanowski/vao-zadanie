@@ -32,7 +32,7 @@ export default function Layout() {
           }}
         >
           <AlertHandler/>
-          <Container sx={{pt: 4}}>
+          <Container sx={{pt: 4, minHeight: '100%', position: 'relative'}}>
             <Outlet/>
           </Container>
         </Box>

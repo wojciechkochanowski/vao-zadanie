@@ -5,16 +5,17 @@ type TComponentProps<T extends FieldValues> = {
   name: FieldPath<T>,
   label: string,
   control: Control<T>,
+  disabled?: boolean
 }
 
-export default function FieldSwitch<T extends FieldValues>({ name, label, control }: TComponentProps<T>) {
+export default function FieldSwitch<T extends FieldValues>({ name, label, control, disabled }: TComponentProps<T>) {
   return (
     <Box pb={2}>
       <Controller
         name={name}
         control={control}
         render={({ field: { onChange, value }}) => (
-          <FormControlLabel control={<Switch checked={value} onChange={onChange} />} label={label} />
+          <FormControlLabel control={<Switch checked={value} onChange={onChange} disabled={disabled} />} label={label} />
         )}
       />
     </Box>

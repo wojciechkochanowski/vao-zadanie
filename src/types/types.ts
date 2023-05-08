@@ -33,3 +33,11 @@ export type TAlert = {
   type: 'error' | 'warning' | 'info' | 'success'
   message: string
 }
+
+export type TLoginData = {
+  email: string,
+  password: string
+  oauth?: boolean
+}
+
+export type TCurrentUser = TUser | null
