@@ -1,5 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { useDispatch } from "react-redux"
 import { TUser } from '../types/types'
+import { addAlert } from '../redux/alert'
 
 export default function useUserDetails(id: string | undefined) {
   const { isLoading, data } = useQuery(['user_details', id], async () => {
@@ -11,6 +13,7 @@ export default function useUserDetails(id: string | undefined) {
 
 export function useSaveUserDetails(){
   const queryClient = useQueryClient()
+  const dispatch = useDispatch()
   return useMutation(async (user: TUser) => {
     if(user.id){
       const res = await fetch(`${process.env.REACT_APP_API_URL}/users/${user.id}`, {
@@ -30,6 +33,7 @@ export function useSaveUserDetails(){
   }, {
     onSuccess: (data) => {
       queryClient.invalidateQueries(['project_details', data.id + ''])
+      dispatch(addAlert({type: 'success', message: 'Zapisano'}))
     }
   })
 }
